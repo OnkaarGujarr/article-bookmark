@@ -33,9 +33,6 @@ LibraryFacade::saveToLibrary($articleId)
 
 3. Delete Bookmark
 LibraryFacade::removeFromLibrary($articleId)
-```php
-// Usage description here
-```
 
 ### Testing
 
