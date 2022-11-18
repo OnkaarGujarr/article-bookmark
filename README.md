@@ -1,4 +1,4 @@
-# Very short description of the package
+# Article Bookmark
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/onkaargujarr/library.svg?style=flat-square)](https://packagist.org/packages/onkaargujarr/library)
 [![Total Downloads](https://img.shields.io/packagist/dt/onkaargujarr/library.svg?style=flat-square)](https://packagist.org/packages/onkaargujarr/library)
