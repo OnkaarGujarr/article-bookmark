@@ -18,14 +18,15 @@ Include this in your composer.json file.
     ]
 ```  
 Installation Steps:-
+```
 1. composer require onkaargujarr/library
 
 2. php artisan vendor:publish --provider="OnkaarGujarr\Library\LibraryServiceProvider"
 
 3. php artisan migrate
-
+```
 ## Usage
-
+```
 1.  To fetch all thee bookmark:
 LibraryFacade::getAllLibrary()
 
@@ -34,7 +35,7 @@ LibraryFacade::saveToLibrary($articleId)
 
 3. Delete Bookmark
 LibraryFacade::removeFromLibrary($articleId)
-
+```
 ### Testing
 
 ```bash
