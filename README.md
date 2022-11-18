@@ -8,6 +8,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Installation
 Include this in your composer.json file.
+```
 "repositories": [
         {
             "type": "vcs",
@@ -15,7 +16,7 @@ Include this in your composer.json file.
             "no-api": true
         }
     ]
-    
+```  
 Installation Steps:-
 1. composer require onkaargujarr/library
 
