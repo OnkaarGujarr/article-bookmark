@@ -1,6 +1,6 @@
 <?php
 
-namespace OnkaarGujarr\Library;
+namespace OnkaarGujarr\Library\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

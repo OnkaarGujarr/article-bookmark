@@ -2,7 +2,11 @@
 
 namespace OnkaarGujarr\Library;
 
+use OnkaarGujarr\Library\Http\Traits\LibraryTrait;
+
 class Library
 {
-    // Build your next great package.
+    use LibraryTrait;
+
+    // Trait will not require in this package.
 }

@@ -47,7 +47,7 @@
                 "OnkaarGujarr\\Library\\LibraryServiceProvider"
             ],
             "aliases": {
-                "Library": "OnkaarGujarr\\Library\\LibraryFacade"
+                "Library": "OnkaarGujarr\\Library\\Facades\\LibraryFacade"
             }
         }
     }
