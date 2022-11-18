@@ -12,7 +12,7 @@ Include this in your composer.json file.
 "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:cactuscommunications/clevertap.git",
+            "url": "git@github.com:OnkaarGujarr/Library.git",
             "no-api": true
         }
     ]
