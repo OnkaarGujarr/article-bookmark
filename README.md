@@ -1,4 +1,4 @@
-# Very short description of the package
+# Article Bookmark
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/onkaargujarr/library.svg?style=flat-square)](https://packagist.org/packages/onkaargujarr/library)
 [![Total Downloads](https://img.shields.io/packagist/dt/onkaargujarr/library.svg?style=flat-square)](https://packagist.org/packages/onkaargujarr/library)
@@ -7,19 +7,35 @@
 This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
 ## Installation
-
-You can install the package via composer:
-
+Include this in your composer.json file.
 ```bash
-composer require onkaargujarr/library
-```
+"repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:OnkaarGujarr/Library.git",
+            "no-api": true
+        }
+    ]
+```  
+Installation Steps:-
+```bash
+1. composer require onkaargujarr/library
 
+2. php artisan vendor:publish --provider="OnkaarGujarr\Library\LibraryServiceProvider"
+
+3. php artisan migrate
+```
 ## Usage
+``` php
+1.  To fetch all thee bookmark:
+LibraryFacade::getAllLibrary()
 
-```php
-// Usage description here
+2. Save Bookmark
+LibraryFacade::saveToLibrary($articleId)
+
+3. Delete Bookmark
+LibraryFacade::removeFromLibrary($articleId)
 ```
-
 ### Testing
 
 ```bash
