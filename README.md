@@ -8,7 +8,7 @@ This is where your description should go. Try and limit it to a paragraph or two
 
 ## Installation
 Include this in your composer.json file.
-```
+```bash
 "repositories": [
         {
             "type": "vcs",
@@ -18,7 +18,7 @@ Include this in your composer.json file.
     ]
 ```  
 Installation Steps:-
-```
+```bash
 1. composer require onkaargujarr/library
 
 2. php artisan vendor:publish --provider="OnkaarGujarr\Library\LibraryServiceProvider"
@@ -26,7 +26,7 @@ Installation Steps:-
 3. php artisan migrate
 ```
 ## Usage
-```
+``` php
 1.  To fetch all thee bookmark:
 LibraryFacade::getAllLibrary()
 
