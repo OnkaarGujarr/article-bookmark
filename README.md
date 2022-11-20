@@ -28,7 +28,11 @@ Installation Steps:-
 ## Usage
 ``` php
 1.  To fetch all thee bookmark:
-LibraryFacade::getAllLibrary()
+$params = [
+            'userId'=>$user->id,
+            'version'=>$version
+        ];
+LibraryFacade::getAllLibrary($params)
 
 2. Save Bookmark
 LibraryFacade::saveToLibrary($articleId)
