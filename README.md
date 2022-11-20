@@ -35,10 +35,22 @@ $params = [
 LibraryFacade::getAllLibrary($params)
 
 2. Save Bookmark
-LibraryFacade::saveToLibrary($articleId)
+$params = [
+            'user_id'=>$user->id,
+            'version'=>$version,
+            "source"=>"feed",
+            "article_id"=>$articleId
+        ];
+LibraryFacade::saveToLibrary($params)
 
 3. Delete Bookmark
-LibraryFacade::removeFromLibrary($articleId)
+$params = [
+            'user_id'=>$user->id,
+            'version'=>$version,
+            "source"=>"feed",
+            "article_id"=>$articleId
+        ];
+LibraryFacade::removeFromLibrary($params)
 ```
 ### Testing
 
