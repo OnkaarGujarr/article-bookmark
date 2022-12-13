@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Arr;
 use OnkaarGujarr\Library\Repository\Library\LibraryInterface;
-use OnkaarGujarr\Library\Repository\UserReadHistory\UserReadHistoryInterface;
 use App\Exceptions\DiscoveryApiException;
 
 
@@ -15,16 +14,14 @@ class  LibraryService
 
     public function __construct(
         LibraryInterface $libraryInterface,
-        LibraryValidator $libraryValidator,
-        UserReadHistoryInterface $userReadHistoryRepo
+        LibraryValidator $libraryValidator
         )
     {
         $this->libraryInterface = $libraryInterface;
         $this->libraryValidator = $libraryValidator;
-        $this->userReadHistoryRepo = $userReadHistoryRepo;
     }
 
-    public function setUserId(int $userId): LibraryService
+    public function setUserId(int $userId)
     {
         $this->userId = $userId;
         return $this;
@@ -39,28 +36,7 @@ class  LibraryService
         if ($library->isEmpty()) {
             return [];
         }
-
-        $articleColumn = 'article_id';
-        if ($version == 'new') {
-            $articleColumn = 'new_article_id';
-        }
-
-        $articleIds = $library->pluck($articleColumn)->toArray();
-        
-        // TODO:: UserReadHistory is an another repository (It will not be included in this package)
-
-        $readHistory = $this->userReadHistoryRepo->getHistoryBasedOnUserVersionForProvideArticleIds(
-            $this->userId, $articleIds, $version)->pluck('id', $articleColumn)->toArray();
-
-        return $library->transform(function ($item) use ($readHistory, $articleColumn) {
-            $articleId = $item->$articleColumn;
-            $articleMeta = $item->article_meta;
-            $articleMeta[ 'id' ] = $articleId;
-            $item[ 'article' ] = new Article($articleMeta);
-            $item[ 'is_read' ] = Arr::has($readHistory, $articleId);
-
-            return $item;
-        })->toArray();
+        return $library;
     }
 
     public function getCountBookmarksForUser(int $userId, $version = 'old'): int
@@ -68,47 +44,35 @@ class  LibraryService
         return $this->libraryInterface->getBookmarkCountBasedOnUserVersionAndDateRange($userId, $version);
     }
 
-    public function storedd($articleId, array $source, $version = 'old')
+    public function stored($params,$version = 'old')
     {
-        $parameters = [
-            'user_id' => $this->userId,
-            'article_id' => $articleId,
-            'source' => Arr::get($source, 'source', self::BOOKMARK_SOURCE_FEED)
-        ];
-
-        if ($version == 'new') {
-            $parameters[ 'new_article_id' ] = $articleId;
-            unset($parameters[ 'article_id' ]);
+        if ($params['version'] == 'new') {
+            $params[ 'new_article_id' ] = $params['article_id'];
+            unset($params[ 'article_id' ]);
         }
-
-        $this->libraryValidator->validate($parameters, LibraryValidator::STORE_BOOKMARK_SOURCE);
-        if ($version == 'new') {
-            return $this->libraryInterface->updateOrCreated(Arr::only($parameters, ['user_id', 'new_article_id']),
-                $parameters);
+        $this->libraryValidator->validate($params, LibraryValidator::STORE_BOOKMARK_SOURCE);
+        if ($params['version'] == 'new') {
+            return $this->libraryInterface->updateOrCreated(Arr::only($params, ['user_id', 'new_article_id']),
+                $params);
         }
-        return $this->libraryInterface->updateOrCreate(Arr::only($parameters, ['user_id', 'article_id']), $parameters);
+        return $this->libraryInterface->updateOrCreate(Arr::only($params, ['user_id', 'article_id']), $params);
     }
 
-    public function remove($articleId, $version = 'old'): bool
+    public function remove($params, $version = 'old')
     {
-        $parameters = [
-            'user_id' => $this->userId,
-            'article_id' => $articleId,
-        ];
-
-        if ($version == 'new') {
-            $parameters = [
+        if ($params['version'] == 'new') {
+            $params = [
                 'user_id' => $this->userId,
-                'new_article_id' => $articleId,
+                'new_article_id' => $params['article_id'],
             ];
         }
 
-        $this->libraryValidator->validate($parameters, LibraryValidator::STORE_BOOKMARK);
-        if ($library = $this->libraryInterface->findWhere($parameters)) {
+        $this->libraryValidator->validate($params, LibraryValidator::STORE_BOOKMARK);
+        if ($library = $this->libraryInterface->findWhere($params)) {
             return $library->delete();
+        }else{
+            return "Bookmark doesn't exist";
         }
-        logger()->warning('POSSIBLE BUG: User tried to remove a non-existing bookmark', $parameters);
-        throw new DiscoveryApiException("Bookmark doesn't exist", 422);
     }
     
 }

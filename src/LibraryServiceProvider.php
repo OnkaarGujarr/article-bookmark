@@ -7,10 +7,12 @@ use OnkaarGujarr\Library\Repository\Library\LibraryInterface;
 use OnkaarGujarr\Library\Repository\Library\LibraryRepository;
 use OnkaarGujarr\Library\Repository\UserReadHistory\UserReadHistoryInterface;
 use OnkaarGujarr\Library\Repository\UserReadHistory\UserReadHistoryRepository;
-
+use OnkaarGujarr\Library\Services\Library\LibraryService;
 use OnkaarGujarr\Library\Provider\EventServiceProvider;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class LibraryServiceProvider extends ServiceProvider
+
+class LibraryServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Bootstrap the application services.
@@ -23,7 +25,7 @@ class LibraryServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'library');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'library');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
+        // $this->loadRoutesFrom(__DIR__.'/routes.php');    
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -60,13 +62,17 @@ class LibraryServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('library', function () {
-            return new Library;
+            return new Library();
         });
 
         $this->app->bind(LibraryInterface::class,LibraryRepository::class);
         $this->app->bind(UserReadHistoryInterface::class,UserReadHistoryRepository::class);
         $this->app->register(EventServiceProvider::class);
-
-
     }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
 }

@@ -9,8 +9,10 @@ class LibraryValidator
 {
 
     public const STORE_BOOKMARK = 'storeBookmark';
+    public const STORE_BOOKMARK_REQUEST = 'storeBookmarkRequest';
     public const STORE_BOOKMARK_SOURCE = 'storeBookmarkSource';
     public const GET_BOOKMARK = 'getBookmark';
+    public const GET_BOOKMARK_REQUEST = 'getBookmarkRequest';
 
     protected $rules = [];
     protected $messages = [];
@@ -21,6 +23,12 @@ class LibraryValidator
             self::STORE_BOOKMARK        => [
                 'user_id'    => ['required', 'integer'],
                 'article_id' => [],
+            ],
+            self::STORE_BOOKMARK_REQUEST        => [
+                'user_id'    => ['required', 'integer'],
+                'article_id' => 'required',
+                'version' => 'required',
+                'source' => 'required',
             ],
             self::STORE_BOOKMARK_SOURCE => [
                 'source'     => ['required', 'string'],
@@ -33,10 +41,26 @@ class LibraryValidator
                 'sort_by'  => 'string|in:created_at',
                 'order_by' => 'string|in:asc,desc'
             ],
+            self::GET_BOOKMARK_REQUEST          => [
+                'user_id' => 'required|numeric',
+                'version' => 'required'
+            ],
         ];
 
         $this->messages = [
             self::STORE_BOOKMARK        => [
+                'user_id.required'    => 'User not found, please login',
+                'user_id.integer'     => 'User id must be an integer',
+                'article_id.required' => 'Article id is required',
+            ],
+            self::STORE_BOOKMARK_REQUEST        => [
+                'user_id.required'    => 'User not found, please login',
+                'user_id.integer'     => 'User id must be an integer',
+                'article_id.required' => 'Article id is required',
+                'version.required' => 'Version is required',
+                'source.required' => 'Source is required',
+            ],
+            self::STORE_BOOKMARK_REQUEST       => [
                 'user_id.required'    => 'User not found, please login',
                 'user_id.integer'     => 'User id must be an integer',
                 'article_id.required' => 'Article id is required',
@@ -52,6 +76,10 @@ class LibraryValidator
                 'sort_by.in'      => "sort by should be 'created_at'",
                 'order_by.string' => 'order by must be string',
                 'order_by.in'     => "order by should be 'asc' or 'desc'"
+            ],
+            self::GET_BOOKMARK_REQUEST          => [
+                'user_id.required' => 'user_id is required',
+                'version.required' => 'version isrequired'
             ],
         ];
     }
